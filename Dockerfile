@@ -16,5 +16,10 @@ WORKDIR /app
 # Copy the binary from the builder stage
 COPY --from=builder /app/vault-unsealer .
 
+# Install rootCA
+RUN apt-get update && apt-get install -y ca-certificates
+COPY rootCA.crt /usr/local/share/ca-certificates/
+RUN update-ca-certificates
+
 # Command to run the executable
 CMD ["./vault-unsealer"]
